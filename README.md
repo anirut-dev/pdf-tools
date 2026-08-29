@@ -2,6 +2,10 @@
 
 เว็บเครื่องมือจัดการไฟล์ PDF ใช้เอง — ทำงานฝั่ง browser ทั้งหมด (client-side) ไม่มีการอัปโหลดไฟล์ไปเซิร์ฟเวอร์ไหนเลย
 
+**🔗 ใช้งานได้ที่:** https://anirut-dev.github.io/pdf-tools/
+
+![หน้าแรกของ PDF Desk แสดงการ์ด 4 เครื่องมือ: Merge PDF, JPG to PDF, Split PDF, Shrink Images](assets/screenshot.jpg)
+
 ## ภาพรวมโปรเจค
 
 - เป็นเว็บ **static HTML/CSS/JS** ล้วน ๆ ไม่มี build step (ไม่ต้อง npm install ก่อนใช้งาน)
@@ -22,13 +26,23 @@
 
 ```
 pdf-tools/
-├── index.html          # หน้าแรก แสดงการ์ด 4 เครื่องมือ
+├── index.html            # หน้าแรก แสดงการ์ด 4 เครื่องมือ
 ├── css/
-│   └── style.css       # สไตล์ทั้งหมด ใช้ร่วมกันทุกหน้า
+│   └── style.css         # สไตล์ทั้งหมด ใช้ร่วมกันทุกหน้า
 ├── js/
-│   └── merge.js         # ตรรกะของเครื่องมือรวมไฟล์ PDF
-└── tools/
-    └── merge.html       # หน้าเครื่องมือรวมไฟล์ PDF
+│   ├── merge.js           # ตรรกะ Merge PDF
+│   ├── jpg-to-pdf.js      # ตรรกะ JPG → PDF
+│   ├── split.js           # ตรรกะ Split PDF
+│   └── shrink.js          # ตรรกะ Shrink Images
+├── tools/
+│   ├── merge.html         # หน้า Merge PDF
+│   ├── jpg-to-pdf.html    # หน้า JPG → PDF
+│   ├── split.html         # หน้า Split PDF
+│   └── shrink.html        # หน้า Shrink Images
+├── assets/
+│   └── screenshot.jpg     # ภาพหน้าจอสำหรับ README
+└── docs/
+    └── postmortems/       # บันทึกบั๊กที่เจอและแก้แล้ว
 ```
 
 ## สถานะเครื่องมือ (4 อย่าง)
@@ -36,9 +50,9 @@ pdf-tools/
 | เครื่องมือ | สถานะ |
 |---|---|
 | รวมไฟล์ PDF (Merge PDF) | ✅ เสร็จแล้ว ทดสอบแล้ว |
-| แปลง JPG → PDF | ⬜ ยังไม่ทำ |
-| แยกหน้า PDF (Split PDF) | ⬜ ยังไม่ทำ |
-| ลดขนาดรูปภาพ (Shrink Images) | ⬜ ยังไม่ทำ |
+| แปลง JPG → PDF | ✅ เสร็จแล้ว ทดสอบแล้ว |
+| แยกหน้า PDF (Split PDF) | ✅ เสร็จแล้ว ทดสอบแล้ว |
+| ลดขนาดรูปภาพ (Shrink Images) | ✅ เสร็จแล้ว ทดสอบแล้ว |
 
 ## วิธีใช้งาน (dev)
 
