@@ -551,6 +551,60 @@ button {
   background: var(--line);
 }
 
+/* quality panel — shrink-images slider */
+
+.quality-panel {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.quality-panel .field-row {
+  gap: 14px;
+}
+
+.quality-value {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent-dark);
+  width: 44px;
+  flex: none;
+  text-align: right;
+}
+
+input[type="range"] {
+  flex: 1 1 220px;
+  min-width: 160px;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
 /* actions row */
 
 .tool-actions {
