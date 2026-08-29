@@ -66,7 +66,7 @@
       li.className = "file-strip";
       li.innerHTML = `
         <span class="order">${index + 1}</span>
-        <span class="name" title="${entry.file.name}">${entry.file.name}</span>
+        <span class="name"></span>
         <span class="meta">${formatSize(entry.file.size)}</span>
         <span class="actions">
           <button class="icon-btn" data-action="up" data-id="${entry.id}" ${index === 0 ? "disabled" : ""} aria-label="Move up">${ICONS.up}</button>
@@ -74,6 +74,9 @@
           <button class="icon-btn danger" data-action="remove" data-id="${entry.id}" aria-label="Remove">${ICONS.remove}</button>
         </span>
       `;
+      const nameSpan = li.querySelector(".name");
+      nameSpan.textContent = entry.file.name;
+      nameSpan.title = entry.file.name;
       fileListEl.appendChild(li);
     });
 
@@ -104,6 +107,10 @@
   fileInput.addEventListener("change", (e) => {
     addFiles(e.target.files);
     fileInput.value = "";
+  });
+
+  dropzone.addEventListener("click", () => {
+    fileInput.click();
   });
 
   ["dragenter", "dragover"].forEach((evt) => {
