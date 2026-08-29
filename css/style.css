@@ -393,6 +393,16 @@ button {
   padding: 10px 12px;
 }
 
+.file-strip .thumb {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  object-fit: cover;
+  border-radius: 2px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+}
+
 .file-strip .order {
   font-family: var(--font-mono);
   font-size: 12px;

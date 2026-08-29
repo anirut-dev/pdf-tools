@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JPG to PDF — PDF Desk</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="mark" href="../index.html">
+      <span class="stamp">PDF</span>
+      <h1>Desk</h1>
+    </a>
+    <span class="tagline">local &middot; private &middot; no upload</span>
+  </header>
+
+  <main class="page">
+    <div class="tool-header">
+      <a class="back-link" href="../index.html">&larr; all tools</a>
+    </div>
+
+    <div class="tool-title">
+      <h2>JPG &rarr; PDF</h2>
+      <p>Add photos, put them in the order you want, and turn them into one PDF — one photo per page. Nothing leaves your browser.</p>
+    </div>
+
+    <div class="dropzone" id="dropzone">
+      <input type="file" id="file-input" accept="image/jpeg" multiple />
+      <div class="tray-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 14v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-5" />
+          <path d="M12 3v11" />
+          <path d="M7.5 9.5L12 14l4.5-4.5" />
+        </svg>
+      </div>
+      <h4>Drop photos here</h4>
+      <p>or click to browse</p>
+      <div class="hint">only .jpg / .jpeg &middot; stays on this device</div>
+    </div>
+
+    <ul class="file-list" id="file-list"></ul>
+    <p class="empty-note" id="empty-note">No photos added yet.</p>
+
+    <div class="tool-actions">
+      <button class="btn btn-primary" id="convert-btn" disabled>Convert &amp; download</button>
+      <button class="btn btn-ghost" id="clear-btn" disabled>Clear all</button>
+      <span class="status-line" id="status"></span>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span>PDF Desk</span>
+    <span>files never leave this tab</span>
+  </footer>
+
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <script src="../js/jpg-to-pdf.js"></script>
+</body>
+</html>
