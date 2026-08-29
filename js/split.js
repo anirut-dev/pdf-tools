@@ -13,6 +13,7 @@
 
   /** @type {{ file: File, pageCount: number } | null} */
   let loaded = null;
+  let busy = false;
 
   function formatSize(bytes) {
     if (bytes < 1024) return `${bytes} B`;
@@ -46,7 +47,7 @@
     }
     emptyNote.hidden = true;
     splitPanel.hidden = false;
-    clearBtn.disabled = false;
+    clearBtn.disabled = busy;
 
     const li = document.createElement("li");
     li.className = "file-strip";
@@ -63,8 +64,8 @@
     fileListEl.appendChild(li);
   }
 
-  async function loadFile(file) {
-    setStatus("");
+  async function loadFile(file, notice) {
+    setStatus(notice || "");
     setRangeHint("");
     try {
       const bytes = await file.arrayBuffer();
@@ -81,14 +82,18 @@
   }
 
   function addFiles(fileListArg) {
+    if (busy) return;
     const incoming = Array.from(fileListArg).filter(
       (f) => f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf")
     );
     if (incoming.length === 0) return;
-    loadFile(incoming[0]);
+    const notice =
+      incoming.length > 1 ? `Using ${incoming[0].name} — this tool takes one PDF at a time.` : "";
+    loadFile(incoming[0], notice);
   }
 
   fileListEl.addEventListener("click", (e) => {
+    if (busy) return;
     const btn = e.target.closest(".icon-btn");
     if (!btn) return;
     if (btn.dataset.action === "remove") {
@@ -99,6 +104,7 @@
   });
 
   clearBtn.addEventListener("click", () => {
+    if (busy) return;
     loaded = null;
     renderLoaded();
     setStatus("");
@@ -176,7 +182,7 @@
   }
 
   extractBtn.addEventListener("click", async () => {
-    if (!loaded) return;
+    if (!loaded || busy) return;
     let indices;
     try {
       indices = parsePageRanges(rangeInput.value, loaded.pageCount);
@@ -186,31 +192,43 @@
       return;
     }
 
+    const workingFile = loaded.file;
+    busy = true;
     extractBtn.disabled = true;
+    clearBtn.disabled = true;
     setStatus("Extracting…");
     try {
-      const bytes = await loaded.file.arrayBuffer();
+      const bytes = await workingFile.arrayBuffer();
       const sourcePdf = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
       const outPdf = await PDFLib.PDFDocument.create();
       const copiedPages = await outPdf.copyPages(sourcePdf, indices);
       copiedPages.forEach((page) => outPdf.addPage(page));
       const outBytes = await outPdf.save();
       downloadBlob(new Blob([outBytes], { type: "application/pdf" }), "extracted.pdf");
-      setStatus(`Done — extracted ${indices.length} page${indices.length === 1 ? "" : "s"}.`, "success");
+      if (loaded && loaded.file === workingFile) {
+        setStatus(`Done — extracted ${indices.length} page${indices.length === 1 ? "" : "s"}.`, "success");
+      }
     } catch (err) {
       console.error(err);
-      setStatus("Could not extract those pages.", "error");
+      if (loaded && loaded.file === workingFile) {
+        setStatus("Could not extract those pages.", "error");
+      }
     } finally {
+      busy = false;
       extractBtn.disabled = false;
+      renderLoaded();
     }
   });
 
   splitAllBtn.addEventListener("click", async () => {
-    if (!loaded) return;
+    if (!loaded || busy) return;
+    const workingFile = loaded.file;
+    busy = true;
     splitAllBtn.disabled = true;
+    clearBtn.disabled = true;
     setStatus("Splitting…");
     try {
-      const bytes = await loaded.file.arrayBuffer();
+      const bytes = await workingFile.arrayBuffer();
       const sourcePdf = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
       const pageCount = sourcePdf.getPageCount();
       const zip = new JSZip();
@@ -227,12 +245,18 @@
 
       const zipBlob = await zip.generateAsync({ type: "blob" });
       downloadBlob(zipBlob, "split-pages.zip");
-      setStatus(`Done — split into ${pageCount} files.`, "success");
+      if (loaded && loaded.file === workingFile) {
+        setStatus(`Done — split into ${pageCount} files.`, "success");
+      }
     } catch (err) {
       console.error(err);
-      setStatus("Could not split this PDF.", "error");
+      if (loaded && loaded.file === workingFile) {
+        setStatus("Could not split this PDF.", "error");
+      }
     } finally {
+      busy = false;
       splitAllBtn.disabled = false;
+      renderLoaded();
     }
   });
 
