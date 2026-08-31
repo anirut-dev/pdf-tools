@@ -36,7 +36,8 @@ pdf-tools/
 │   ├── shrink.js          # ตรรกะ Shrink Images
 │   ├── pdf-to-jpg.js      # ตรรกะ PDF → JPG
 │   ├── html-to-pdf.js     # ตรรกะ HTML → PDF
-│   └── pdf-to-pdfa.js     # ตรรกะ PDF → PDF/A-style
+│   ├── pdf-to-pdfa.js     # ตรรกะ PDF → PDF/A-style
+│   └── excel-to-pdf.js    # ตรรกะ Excel → PDF
 ├── tools/
 │   ├── merge.html         # หน้า Merge PDF
 │   ├── jpg-to-pdf.html    # หน้า JPG → PDF
@@ -44,14 +45,15 @@ pdf-tools/
 │   ├── shrink.html        # หน้า Shrink Images
 │   ├── pdf-to-jpg.html    # หน้า PDF → JPG
 │   ├── html-to-pdf.html   # หน้า HTML → PDF
-│   └── pdf-to-pdfa.html   # หน้า PDF → PDF/A-style
+│   ├── pdf-to-pdfa.html   # หน้า PDF → PDF/A-style
+│   └── excel-to-pdf.html  # หน้า Excel → PDF
 ├── assets/
 │   └── screenshot.jpg     # ภาพหน้าจอสำหรับ README
 └── docs/
     └── postmortems/       # บันทึกบั๊กที่เจอและแก้แล้ว
 ```
 
-## สถานะเครื่องมือ (7 อย่าง)
+## สถานะเครื่องมือ (8 อย่าง)
 
 | เครื่องมือ | สถานะ |
 |---|---|
@@ -62,6 +64,7 @@ pdf-tools/
 | แปลง PDF → JPG | ✅ เสร็จแล้ว ทดสอบแล้ว |
 | แปลง HTML → PDF | ✅ เสร็จแล้ว ทดสอบแล้ว |
 | แปลง PDF → PDF/A-style (best-effort, ไม่ใช่ PDF/A แบบรับรองมาตรฐาน) | ✅ เสร็จแล้ว ทดสอบแล้ว |
+| แปลง Excel → PDF (ดั๊มพ์ข้อมูลตาราง ไม่ใช่ print layout จริง) | ✅ เสร็จแล้ว ทดสอบแล้ว |
 
 ## วิธีใช้งาน (dev)
 
