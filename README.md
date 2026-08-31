@@ -4,13 +4,13 @@
 
 **🔗 ใช้งานได้ที่:** https://anirut-dev.github.io/pdf-tools/
 
-![หน้าแรกของ PDF Desk แสดงการ์ด 4 เครื่องมือ: Merge PDF, JPG to PDF, Split PDF, Shrink Images](assets/screenshot.jpg)
+![หน้าแรกของ PDF Desk แสดงการ์ดเครื่องมือ](assets/screenshot.jpg)
 
 ## ภาพรวมโปรเจค
 
 - เป็นเว็บ **static HTML/CSS/JS** ล้วน ๆ ไม่มี build step (ไม่ต้อง npm install ก่อนใช้งาน)
-- ใช้ไลบรารี [pdf-lib](https://pdf-lib.js.org/) (สำหรับอ่าน/เขียนไฟล์ PDF) โหลดผ่าน CDN (`unpkg.com`)
-- ไฟล์ PDF/รูปภาพที่ผู้ใช้เลือก จะถูกประมวลผลในเบราว์เซอร์ของผู้ใช้เองทั้งหมด ไม่ส่งไปที่ไหน
+- ใช้ไลบรารีต่าง ๆ โหลดผ่าน CDN (`unpkg.com`) ตามแต่ละเครื่องมือ (ดูตาราง "เทคสแตค")
+- ไฟล์ PDF/รูปภาพ/เอกสารที่ผู้ใช้เลือก จะถูกประมวลผลในเบราว์เซอร์ของผู้ใช้เองทั้งหมด ไม่ส่งไปที่ไหน
 
 ## เทคสแตค
 
@@ -20,13 +20,17 @@
 | สไตล์ | CSS3 (ไฟล์เดียว ใช้ร่วมกันทุกหน้า: `css/style.css`) |
 | ฟอนต์ | Google Fonts — Fraunces (หัวข้อ), Inter (เนื้อหา), JetBrains Mono (ตัวเลข/label) |
 | ตรรกะ/การทำงาน | JavaScript (Vanilla ไม่มี framework) |
-| จัดการไฟล์ PDF | pdf-lib (โหลดผ่าน CDN) |
+| อ่าน/เขียน/รวม/แยกไฟล์ PDF | [pdf-lib](https://pdf-lib.js.org/) |
+| รับรู้/render หน้า PDF เป็นรูป | [pdf.js](https://mozilla.github.io/pdf.js/) |
+| render HTML/ตาราง Excel เป็นภาพก่อนทำ PDF | [html2canvas](https://html2canvas.hertzen.com/) + [jsPDF](https://github.com/parallax/jsPDF) |
+| อ่านไฟล์ Excel (.xlsx/.xls) | [SheetJS (xlsx)](https://sheetjs.com/) |
+| บีบอัดหลายไฟล์เป็น .zip | [JSZip](https://stuk.github.io/jszip/) |
 
 ## โครงสร้างไฟล์
 
 ```
 pdf-tools/
-├── index.html            # หน้าแรก แสดงการ์ด 4 เครื่องมือ
+├── index.html            # หน้าแรก แสดงการ์ด 8 เครื่องมือ
 ├── css/
 │   └── style.css         # สไตล์ทั้งหมด ใช้ร่วมกันทุกหน้า
 ├── js/
@@ -65,6 +69,18 @@ pdf-tools/
 | แปลง HTML → PDF | ✅ เสร็จแล้ว ทดสอบแล้ว |
 | แปลง PDF → PDF/A-style (best-effort, ไม่ใช่ PDF/A แบบรับรองมาตรฐาน) | ✅ เสร็จแล้ว ทดสอบแล้ว |
 | แปลง Excel → PDF (ดั๊มพ์ข้อมูลตาราง ไม่ใช่ print layout จริง) | ✅ เสร็จแล้ว ทดสอบแล้ว |
+
+## เครื่องมือที่คิดไว้แต่ยังไม่ทำ (ค้าง issue ไว้ตั้งใจ)
+
+ประเมินแล้วว่ายากเกินไปสำหรับข้อจำกัดของโปรเจคนี้ (static site, ไม่มี backend, ไลบรารีต้องโหลดผ่าน CDN ได้) — เก็บ issue ไว้แบบเปิดค้างโดยตั้งใจ ไม่ใช่ลืมทำ เผื่ออนาคตมีไอเดียซ้ำจะได้ย้อนมาดูเหตุผลได้:
+
+| Issue | เครื่องมือ | เหตุผลที่ค้างไว้ |
+|---|---|---|
+| [#6](https://github.com/anirut-dev/pdf-tools/issues/6) | WORD → PDF | ไม่มีไลบรารีเบา ๆ ที่ render โครงสร้าง .docx ได้ครบ ทำได้แค่ประมาณการผ่าน mammoth.js → HTML → PDF |
+| [#7](https://github.com/anirut-dev/pdf-tools/issues/7) | POWERPOINT → PDF | เหมือน #6 แต่ต้องจัดการตำแหน่ง object ต่อสไลด์เพิ่ม ซับซ้อนกว่า |
+| [#9](https://github.com/anirut-dev/pdf-tools/issues/9) | PDF → WORD | ทิศทางย้อนกลับ (แกะ PDF กลับเป็นเอกสารแก้ไขได้) แทบเป็นไปไม่ได้ด้วย client-side library — แม้แต่เครื่องมือมืออาชีพยังทำได้ไม่สมบูรณ์ |
+| [#10](https://github.com/anirut-dev/pdf-tools/issues/10) | PDF → POWERPOINT | เหตุผลเดียวกับ #9 |
+| [#11](https://github.com/anirut-dev/pdf-tools/issues/11) | PDF → EXCEL | เหตุผลเดียวกับ #9 |
 
 ## วิธีใช้งาน (dev)
 
