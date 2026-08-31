@@ -35,21 +35,23 @@ pdf-tools/
 │   ├── split.js           # ตรรกะ Split PDF
 │   ├── shrink.js          # ตรรกะ Shrink Images
 │   ├── pdf-to-jpg.js      # ตรรกะ PDF → JPG
-│   └── html-to-pdf.js     # ตรรกะ HTML → PDF
+│   ├── html-to-pdf.js     # ตรรกะ HTML → PDF
+│   └── pdf-to-pdfa.js     # ตรรกะ PDF → PDF/A-style
 ├── tools/
 │   ├── merge.html         # หน้า Merge PDF
 │   ├── jpg-to-pdf.html    # หน้า JPG → PDF
 │   ├── split.html         # หน้า Split PDF
 │   ├── shrink.html        # หน้า Shrink Images
 │   ├── pdf-to-jpg.html    # หน้า PDF → JPG
-│   └── html-to-pdf.html   # หน้า HTML → PDF
+│   ├── html-to-pdf.html   # หน้า HTML → PDF
+│   └── pdf-to-pdfa.html   # หน้า PDF → PDF/A-style
 ├── assets/
 │   └── screenshot.jpg     # ภาพหน้าจอสำหรับ README
 └── docs/
     └── postmortems/       # บันทึกบั๊กที่เจอและแก้แล้ว
 ```
 
-## สถานะเครื่องมือ (6 อย่าง)
+## สถานะเครื่องมือ (7 อย่าง)
 
 | เครื่องมือ | สถานะ |
 |---|---|
@@ -59,6 +61,7 @@ pdf-tools/
 | ลดขนาดรูปภาพ (Shrink Images) | ✅ เสร็จแล้ว ทดสอบแล้ว |
 | แปลง PDF → JPG | ✅ เสร็จแล้ว ทดสอบแล้ว |
 | แปลง HTML → PDF | ✅ เสร็จแล้ว ทดสอบแล้ว |
+| แปลง PDF → PDF/A-style (best-effort, ไม่ใช่ PDF/A แบบรับรองมาตรฐาน) | ✅ เสร็จแล้ว ทดสอบแล้ว |
 
 ## วิธีใช้งาน (dev)
 
