@@ -551,6 +551,14 @@ button {
   background: var(--line);
 }
 
+.html-textarea {
+  display: block;
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
 /* quality panel — shrink-images slider */
 
 .quality-panel {
