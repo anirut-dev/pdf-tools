@@ -160,6 +160,48 @@
     return String(s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
   }
 
+  // Builds the sheet's table HTML ourselves instead of using SheetJS's
+  // XLSX.utils.sheet_to_html: that helper does not escape cell text, so any
+  // cell containing "<", ">", or "&" — ordinary content like "Q&A" — comes
+  // out as raw markup and silently corrupts the table structure (e.g. a
+  // cell reading "</td><td>" splices in a real extra cell). Escaping every
+  // cell's formatted text below closes that.
+  function buildSheetTableHtml(worksheet) {
+    if (!worksheet["!ref"]) return "<table></table>";
+    const range = XLSX.utils.decode_range(worksheet["!ref"]);
+    const merges = worksheet["!merges"] || [];
+
+    const spanAt = new Map(); // "r,c" -> { rowSpan, colSpan }
+    const covered = new Set(); // "r,c" cells covered by a merge but not its top-left
+    for (const m of merges) {
+      spanAt.set(`${m.s.r},${m.s.c}`, { rowSpan: m.e.r - m.s.r + 1, colSpan: m.e.c - m.s.c + 1 });
+      for (let r = m.s.r; r <= m.e.r; r++) {
+        for (let c = m.s.c; c <= m.e.c; c++) {
+          if (r === m.s.r && c === m.s.c) continue;
+          covered.add(`${r},${c}`);
+        }
+      }
+    }
+
+    let html = "<table>";
+    for (let r = range.s.r; r <= range.e.r; r++) {
+      html += "<tr>";
+      for (let c = range.s.c; c <= range.e.c; c++) {
+        const key = `${r},${c}`;
+        if (covered.has(key)) continue;
+        const cell = worksheet[XLSX.utils.encode_cell({ r, c })];
+        const text = cell ? XLSX.utils.format_cell(cell) : "";
+        const span = spanAt.get(key);
+        const attrs =
+          (span && span.rowSpan > 1 ? ` rowspan="${span.rowSpan}"` : "") +
+          (span && span.colSpan > 1 ? ` colspan="${span.colSpan}"` : "");
+        html += `<td${attrs}>${escapeHtml(text)}</td>`;
+      }
+      html += "</tr>";
+    }
+    return html + "</table>";
+  }
+
   function sheetPageHtml(sheetName, tableHtml) {
     // #content is display:inline-block so it shrink-wraps to the table's
     // actual width — a plain <body> is a block box that always fills its
@@ -284,7 +326,7 @@
       for (const sheetName of workbook.SheetNames) {
         setStatus(`Rendering sheet "${sheetName}"…`);
         const worksheet = workbook.Sheets[sheetName];
-        const tableHtml = XLSX.utils.sheet_to_html(worksheet, { id: "sheet-table" });
+        const tableHtml = buildSheetTableHtml(worksheet);
         const html = sheetPageHtml(sheetName, tableHtml);
         const canvas = await renderSheetToCanvas(html);
         appendCanvasAsPages(pdf, canvas, pageSize, pageState);
